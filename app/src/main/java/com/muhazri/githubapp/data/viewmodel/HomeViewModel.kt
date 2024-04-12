@@ -21,6 +21,8 @@ class HomeViewModel @Inject constructor(private val userRemoteDataSource: UserRe
 
     fun submitSearchQuery(query: String){
         viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
+
             val response = try {
                 userRemoteDataSource.searchUsers(query)
             } catch (e: Exception) {
@@ -29,7 +31,7 @@ class HomeViewModel @Inject constructor(private val userRemoteDataSource: UserRe
             }
 
             response?.let {
-                _state.value = _state.value.copy(users=it.items)
+                _state.value = _state.value.copy(users=it.items, isLoading = false)
             }
         }
     }
@@ -46,5 +48,6 @@ class HomeViewModel @Inject constructor(private val userRemoteDataSource: UserRe
 
 data class HomeScreenState(
     val users: List<User> = emptyList(),
-    val query: String = ""
+    val query: String = "",
+    val isLoading: Boolean = false,
 )

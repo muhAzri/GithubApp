@@ -1,6 +1,7 @@
 package com.muhazri.githubapp.presentation.view.profile
 
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,8 +41,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,9 +58,14 @@ import com.muhazri.githubapp.data.model.FavouriteUserModel
 import com.muhazri.githubapp.data.viewmodel.ProfileViewModel
 import com.muhazri.githubapp.presentation.component.UserTile
 import com.muhazri.githubapp.router.AppRouter
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    DelicateCoroutinesApi::class
+)
 @Composable
 fun ProfileScreen(
     navController: NavController
@@ -154,8 +161,7 @@ fun ProfileScreen(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(
-                        modifier = Modifier
-
+                        modifier = Modifier.widthIn(0.dp, 150.dp)
                     ) {
                         Text(text = state.detailUser?.name ?: "NoName", style = MaterialTheme.typography.titleLarge )
                         Text(text = "@${state.detailUser?.login}", style = MaterialTheme.typography.titleMedium)
@@ -178,37 +184,79 @@ fun ProfileScreen(
             if (state.detailUser?.location !== null)Text(text = "Based On ${state.detailUser?.location}" , style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(16.dp))
 
-            val tabTitles = listOf("Followers", "Following")
-            val selectedTabIndex = remember { mutableIntStateOf(0) }
-            TabRow(selectedTabIndex = selectedTabIndex.intValue) {
-                tabTitles.forEachIndexed { index, title ->
-                    Tab(
-                        text = { Text(text = title) },
-                        selected = selectedTabIndex.intValue == index,
-                        onClick = { selectedTabIndex.intValue = index }
-                    )
-                }
-            }
+//            val tabTitles = listOf("Followers", "Following")
+//            val selectedTabIndex = remember { mutableIntStateOf(0) }
+//            TabRow(selectedTabIndex = selectedTabIndex.intValue) {
+//                tabTitles.forEachIndexed { index, title ->
+//                    Tab(
+//                        text = { Text(text = title) },
+//                        selected = selectedTabIndex.intValue == index,
+//                        onClick = { selectedTabIndex.intValue = index }
+//                    )
+//                }
+//            }
+//
+//            if(state.userFollowersLoading || state.userFollowingLoading){
+//                UserListSkeleton()
+//            } else{
+//                Column(
+//                    modifier = modifier.verticalScroll(rememberScrollState())
+//                ) {
+//                    val users = if (selectedTabIndex.intValue == 0) state.followers else state.following
+//                    users.forEach { user ->
+//                        UserTile(
+//                            imageUrl = user.avatarUrl,
+//                            name = user.login,
+//                            onClick = {
+//                                AppRouter.replaceScreen(navController,"Profile/${user.login}")
+//                            }
+//                        )
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                    }
+//                }
+//            }
 
-            if(state.userFollowersLoading || state.userFollowingLoading){
-                UserListSkeleton()
-            } else{
-                Column(
-                    modifier = modifier.verticalScroll(rememberScrollState())
-                ) {
-                    val users = if (selectedTabIndex.intValue == 0) state.followers else state.following
-                    users.forEach { user ->
-                        UserTile(
-                            imageUrl = user.avatarUrl,
-                            name = user.login,
-                            onClick = {
-                                AppRouter.replaceScreen(navController,"Profile/${user.login}")
-                            }
+            val tabTitles = listOf("Followers", "Following")
+            val pagerState = rememberPagerState(pageCount = {tabTitles.size})
+
+
+
+            Column {
+                TabRow(selectedTabIndex = pagerState.currentPage) {
+                    tabTitles.forEachIndexed { index, title ->
+                        Tab(
+                            text = { Text(text = title) },
+                            selected = pagerState.currentPage == index,
+                            onClick = { GlobalScope.launch {
+                                pagerState.scrollToPage(index)
+                            } }
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
+                if (state.userFollowersLoading || state.userFollowingLoading) {
+                    UserListSkeleton()
+                } else {
+                    HorizontalPager(state = pagerState) { page ->
+                        val users = if (page == 0) state.followers else state.following
+                        Column(
+                            modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+                        ) {
+                            users.forEach { user ->
+                                UserTile(
+                                    imageUrl = user.avatarUrl,
+                                    name = user.login,
+                                    onClick = {
+                                        AppRouter.replaceScreen(navController, "Profile/${user.login}")
+                                    }
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
                     }
                 }
             }
+
         }
     }
 

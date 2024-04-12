@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -113,23 +114,28 @@ fun HomeScreen (
                 })
             )
 
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = 16.dp)
-            ) {
-                items(state.users.size) { index ->
+            if(state.isLoading){
+                CircularProgressIndicator()
+            }
+            else {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    items(state.users.size) { index ->
 
-                    UserTile(
-                        imageUrl = state.users[index].avatarUrl,
-                        name = state.users[index].login,
-                        onClick = {
-                            navController.navigate("Profile/${state.users[index].login}") {
-                                launchSingleTop = true
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+                        UserTile(
+                            imageUrl = state.users[index].avatarUrl,
+                            name = state.users[index].login,
+                            onClick = {
+                                navController.navigate("Profile/${state.users[index].login}") {
+                                    launchSingleTop = true
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
