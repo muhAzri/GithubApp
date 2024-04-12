@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,8 @@ fun UserTile(
     imageUrl: String,
     name: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    painter: Painter? = null
 ) {
     Row(
         modifier = modifier
@@ -33,15 +35,25 @@ fun UserTile(
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = rememberAsyncImagePainter(imageUrl),
-            contentDescription = "User Image",
-            modifier = Modifier
-                .size(50.dp)
-                .clip(shape = RoundedCornerShape(8.dp)),
-
-            contentScale = ContentScale.Crop
-        )
+        if (painter != null) { // Use custom painter if provided
+            Image(
+                painter = painter,
+                contentDescription = "User Image",
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(shape = RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+        } else { // Otherwise, use the default rememberAsyncImagePainter
+            Image(
+                painter = rememberAsyncImagePainter(imageUrl),
+                contentDescription = "User Image",
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(shape = RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(text = name, color= MaterialTheme.colorScheme.onSecondaryContainer)

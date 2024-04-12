@@ -83,6 +83,8 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     ksp (libs.androidx.room.compiler)
     implementation (libs.shimmer)
+   testImplementation (libs.ui.test.junit4)
+
 
 
 }
