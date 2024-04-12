@@ -1,5 +1,6 @@
 package com.muhazri.githubapp.data.datasources
 
+import com.muhazri.githubapp.BuildConfig
 import com.muhazri.githubapp.data.model.DetailUserModel
 import com.muhazri.githubapp.data.model.User
 import com.muhazri.githubapp.data.model.UserSearchResponse
@@ -24,9 +25,12 @@ interface GitHubService {
 }
 
 class UserRemoteDataSource {
+    companion object {
+        const val API_URL = BuildConfig.API_URL
+    }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.github.com/")
+        .baseUrl(API_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

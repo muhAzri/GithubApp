@@ -26,7 +26,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
+        }
         release {
+            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.7"
@@ -82,8 +87,7 @@ dependencies {
     implementation (libs.androidx.hilt.navigation.compose)
     implementation (libs.androidx.room.runtime)
     ksp (libs.androidx.room.compiler)
-    implementation (libs.shimmer)
-   testImplementation (libs.ui.test.junit4)
+    testImplementation (libs.ui.test.junit4)
 
 
 
