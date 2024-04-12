@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GithubApp</string>
+    <string name="title_activity_home_screen">HomeScreen</string>
+
+</resources>
