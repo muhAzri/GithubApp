@@ -1,7 +1,6 @@
 package com.muhazri.githubapp.data.datasources
 
 import android.content.Context
-import androidx.room.Room
 import com.muhazri.githubapp.data.dao.FavouriteUserDao
 import com.muhazri.githubapp.data.database.FavouriteUserDatabase
 import com.muhazri.githubapp.data.model.FavouriteUserModel

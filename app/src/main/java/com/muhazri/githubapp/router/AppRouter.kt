@@ -71,7 +71,6 @@ class AppRouter {
                             is NavigationItem.Profile -> ProfileScreen(navController= navController,login = backStackEntry.arguments?.getString("login")!!)
                             is NavigationItem.Favourite -> FavouriteScreen(navController = navController)
                             is NavigationItem.Settings -> SettingsScreen(navController = navController)
-                            else -> {}
                         }
                     }
                 }
