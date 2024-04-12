@@ -35,7 +35,7 @@ fun UserTile(
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (painter != null) { // Use custom painter if provided
+        if (painter != null) {
             Image(
                 painter = painter,
                 contentDescription = "User Image",
@@ -44,7 +44,7 @@ fun UserTile(
                     .clip(shape = RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
-        } else { // Otherwise, use the default rememberAsyncImagePainter
+        } else {
             Image(
                 painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = "User Image",

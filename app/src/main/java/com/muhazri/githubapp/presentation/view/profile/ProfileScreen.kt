@@ -81,9 +81,9 @@ fun ProfileScreen(
                         Toast.LENGTH_SHORT
                     ).show()
                     val user = FavouriteUserModel(
-                        id = state.detailUser?.id ?: 0, // Assuming id is nullable, provide a default value if it's null
-                        login = state.detailUser?.login ?: "", // Assuming login is nullable, provide a default value if it's null
-                        avatarUrl = state.detailUser?.avatarUrl ?: "" // Assuming avatarUrl is nullable, provide a default value if it's null
+                        id = state.detailUser?.id ?: 0,
+                        login = state.detailUser?.login ?: "",
+                        avatarUrl = state.detailUser?.avatarUrl ?: ""
                     )
 
                     viewModel.setIsFavorite(user)
@@ -238,7 +238,6 @@ fun ProfileSkeleton() {
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        // Shimmering placeholder for the user image
         Surface(
             modifier = Modifier
                 .size(100.dp)
@@ -253,7 +252,6 @@ fun ProfileSkeleton() {
                 .weight(1f)
                 .align(Alignment.CenterVertically)
         ) {
-            // Shimmering placeholder for the user name
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -263,7 +261,6 @@ fun ProfileSkeleton() {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Shimmering placeholder for the user login
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -277,7 +274,6 @@ fun ProfileSkeleton() {
                 .padding(start=16.dp,end = 16.dp)
                 .align(Alignment.CenterVertically)
         ) {
-            // Shimmering placeholder for the followers count
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -287,7 +283,6 @@ fun ProfileSkeleton() {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Shimmering placeholder for the "Followers" text
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -302,14 +297,12 @@ fun UserListSkeleton() {
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        // Creating shimmering placeholders for a fixed number of items
         repeat(5) { _ ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             ) {
-                // Shimmering placeholder for the user image
                 Surface(
                     modifier = Modifier
                         .size(48.dp)
@@ -317,12 +310,10 @@ fun UserListSkeleton() {
                     color = Color.LightGray
                 ) {}
 
-                // Column for user name and additional information
                 Column(
                     modifier = Modifier
                         .weight(1f)
                 ) {
-                    // Shimmering placeholder for the user name
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()

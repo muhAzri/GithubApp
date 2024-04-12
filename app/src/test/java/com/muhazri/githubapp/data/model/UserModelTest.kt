@@ -12,7 +12,6 @@ class UserSearchResponseTest {
         val items = listOf(
             User(1, "user1", "https://example.com/avatar1"),
             User(2, "user2", "https://example.com/avatar2")
-            // Add more users if needed
         )
 
         val userSearchResponse = UserSearchResponse(totalCount, incompleteResults, items)
@@ -20,7 +19,6 @@ class UserSearchResponseTest {
         assertEquals(totalCount, userSearchResponse.totalCount)
         assertEquals(incompleteResults, userSearchResponse.incompleteResults)
         assertEquals(items.size, userSearchResponse.items.size)
-        // Additional assertions can be added for each item in the list
     }
 
     @Test

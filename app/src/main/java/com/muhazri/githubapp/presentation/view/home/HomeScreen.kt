@@ -102,7 +102,7 @@ fun HomeScreen (
                 onValueChange = { viewModel.setSearchQuery(it) },
                 modifier = Modifier
                     .padding(16.dp)
-                    .fillMaxWidth(), // Match parent width
+                    .fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Text,

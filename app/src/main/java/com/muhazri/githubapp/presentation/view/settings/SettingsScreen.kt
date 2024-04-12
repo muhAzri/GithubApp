@@ -74,7 +74,7 @@ fun SettingsScreen(navController: NavController) {
                 Text("Dark Mode")
                 Spacer(modifier = Modifier.weight(1f))
                 Checkbox(
-                    checked = isDarkMode, // Set initial state from SharedPreferences
+                    checked = isDarkMode,
                     onCheckedChange = { isChecked ->
                         isDarkMode = isChecked
                         SharedPreferencesManager.setIsDarkMode(context, isChecked)
