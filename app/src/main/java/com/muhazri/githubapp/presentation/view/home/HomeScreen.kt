@@ -88,7 +88,7 @@ fun HomeScreen (
                     IconButton(onClick = { onNavigateToSettings(navController = navController) }) {
                         Icon(
                             imageVector = Icons.Filled.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = "about_page",
                             tint = MaterialTheme.colorScheme.secondary
                         )
                     }
