@@ -109,6 +109,7 @@ fun SettingsScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(text = "Muhammad Azri Fatihah Susanto", style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
+                Text(text = "muhammad.azri.f.s@gmail.com", style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(16.dp))
             }
             
