@@ -41,6 +41,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,14 +59,15 @@ import com.muhazri.githubapp.data.model.FavouriteUserModel
 import com.muhazri.githubapp.data.viewmodel.ProfileViewModel
 import com.muhazri.githubapp.presentation.component.UserTile
 import com.muhazri.githubapp.router.AppRouter
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    DelicateCoroutinesApi::class
-)
+    DelicateCoroutinesApi::class,)
 @Composable
 fun ProfileScreen(
     navController: NavController
@@ -164,18 +166,23 @@ fun ProfileScreen(
                         modifier = Modifier.widthIn(0.dp, 150.dp)
                     ) {
                         Text(text = state.detailUser?.name ?: "NoName", style = MaterialTheme.typography.titleLarge )
-                        Text(text = "@${state.detailUser?.login}", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "${state.detailUser?.login}", style = MaterialTheme.typography.titleMedium)
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth().height(50.dp),
+                            .fillMaxWidth()
+                            .height(100.dp),
 
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         Text(text = "${state.detailUser?.followers}", style = MaterialTheme.typography.bodyLarge )
                         Text(text = "Followers", style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(text = "${state.detailUser?.following}", style = MaterialTheme.typography.bodyLarge )
+                        Text(text = "Following", style = MaterialTheme.typography.bodyMedium)
+
                     }
                 }
             }
@@ -184,41 +191,10 @@ fun ProfileScreen(
             if (state.detailUser?.location !== null)Text(text = "Based On ${state.detailUser?.location}" , style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(16.dp))
 
-//            val tabTitles = listOf("Followers", "Following")
-//            val selectedTabIndex = remember { mutableIntStateOf(0) }
-//            TabRow(selectedTabIndex = selectedTabIndex.intValue) {
-//                tabTitles.forEachIndexed { index, title ->
-//                    Tab(
-//                        text = { Text(text = title) },
-//                        selected = selectedTabIndex.intValue == index,
-//                        onClick = { selectedTabIndex.intValue = index }
-//                    )
-//                }
-//            }
-//
-//            if(state.userFollowersLoading || state.userFollowingLoading){
-//                UserListSkeleton()
-//            } else{
-//                Column(
-//                    modifier = modifier.verticalScroll(rememberScrollState())
-//                ) {
-//                    val users = if (selectedTabIndex.intValue == 0) state.followers else state.following
-//                    users.forEach { user ->
-//                        UserTile(
-//                            imageUrl = user.avatarUrl,
-//                            name = user.login,
-//                            onClick = {
-//                                AppRouter.replaceScreen(navController,"Profile/${user.login}")
-//                            }
-//                        )
-//                        Spacer(modifier = Modifier.height(8.dp))
-//                    }
-//                }
-//            }
 
             val tabTitles = listOf("Followers", "Following")
             val pagerState = rememberPagerState(pageCount = {tabTitles.size})
-
+            val coroutineScope = rememberCoroutineScope()
 
 
             Column {
@@ -227,9 +203,11 @@ fun ProfileScreen(
                         Tab(
                             text = { Text(text = title) },
                             selected = pagerState.currentPage == index,
-                            onClick = { GlobalScope.launch {
-                                pagerState.scrollToPage(index)
-                            } }
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(page = index)
+                                }
+                            }
                         )
                     }
                 }
@@ -240,7 +218,9 @@ fun ProfileScreen(
                     HorizontalPager(state = pagerState) { page ->
                         val users = if (page == 0) state.followers else state.following
                         Column(
-                            modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .verticalScroll(rememberScrollState())
                         ) {
                             users.forEach { user ->
                                 UserTile(
@@ -319,7 +299,7 @@ fun ProfileSkeleton() {
 
         Column(
             modifier = Modifier
-                .padding(start=16.dp,end = 16.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterVertically)
         ) {
             Surface(
@@ -366,7 +346,7 @@ fun UserListSkeleton() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
-                        .padding(start = 16.dp),
+                            .padding(start = 16.dp),
                         color = Color.LightGray
                     ) {}
 

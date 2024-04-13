@@ -10,4 +10,5 @@ data class DetailUserModel(
     val name: String,
     val location: String,
     val followers: Int,
+    val following: Int
 )
