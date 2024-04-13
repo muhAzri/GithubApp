@@ -25,7 +25,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -59,15 +59,10 @@ import com.muhazri.githubapp.data.model.FavouriteUserModel
 import com.muhazri.githubapp.data.viewmodel.ProfileViewModel
 import com.muhazri.githubapp.presentation.component.UserTile
 import com.muhazri.githubapp.router.AppRouter
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    DelicateCoroutinesApi::class,)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(
     navController: NavController
@@ -82,7 +77,7 @@ fun ProfileScreen(
 
     Scaffold(
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            FloatingActionButton(
                 onClick = {
                     Toast.makeText(
                         context,
@@ -97,22 +92,14 @@ fun ProfileScreen(
 
                     viewModel.setIsFavorite(user)
                 },
-                icon = {
-                    Icon(
-                        imageVector = if (state.isFavourite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        contentDescription = if (state.isFavourite) "Remove from Favorites" else "Add to Favorites",
-                        tint = if (state.isFavourite) MaterialTheme.colorScheme.error else LocalContentColor.current
-                    )
-                },
-                text = {
-                    Text(
-                        text = if (state.isFavourite) "Remove from Favorites" else "Add to Favorites",
-                        modifier = Modifier.padding(end = 16.dp)
-                    )
-                },
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-            )
+
+            ){
+                Icon(
+                    imageVector = if (state.isFavourite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    contentDescription = if (state.isFavourite) "Remove from Favorites" else "Add to Favorites",
+                    tint = if (state.isFavourite) MaterialTheme.colorScheme.error else LocalContentColor.current
+                )
+            }
         },
         topBar = {
             CenterAlignedTopAppBar(
@@ -163,7 +150,7 @@ fun ProfileScreen(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(
-                        modifier = Modifier.widthIn(0.dp, 150.dp)
+                        modifier = Modifier.widthIn(0.dp, 120.dp)
                     ) {
                         Text(text = state.detailUser?.name ?: "NoName", style = MaterialTheme.typography.titleLarge )
                         Text(text = "${state.detailUser?.login}", style = MaterialTheme.typography.titleMedium)
@@ -172,6 +159,7 @@ fun ProfileScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .widthIn(0.dp, 120.dp)
                             .height(100.dp),
 
                         horizontalAlignment = Alignment.CenterHorizontally,
