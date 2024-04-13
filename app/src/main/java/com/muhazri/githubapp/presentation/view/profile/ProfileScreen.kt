@@ -65,9 +65,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(
-    navController: NavController
-    ,login: String,
-    modifier: Modifier = Modifier,
+    navController: NavController,
+    login: String,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()

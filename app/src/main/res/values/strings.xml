@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GithubApp</string>
-    <string name="title_activity_home_screen">HomeScreen</string>
     <string name="about_me_profile_picture_url">https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/small/avatar/dos:0f79433a48d47724c759a6baa172442220230214120820.png</string>
 
 </resources>

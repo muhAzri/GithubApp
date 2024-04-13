@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "favourite_users")
 @Parcelize
 data class FavouriteUserModel(
-    @PrimaryKey()
+    @PrimaryKey
     val id: Int,
     val login: String,
     val avatarUrl: String
